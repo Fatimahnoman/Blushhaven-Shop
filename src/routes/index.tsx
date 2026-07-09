@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Star, Sparkles, ShieldCheck, Truck, Gift } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { ProductCard, type Product } from "@/components/ProductCard";
-import { HERO } from "@/lib/product-images";
+import { HERO, productImage } from "@/lib/product-images";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 
