@@ -120,10 +120,11 @@ function Home() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 {flash.data.slice(0, 4).map((p) => (
-                  <Link key={p.id} to="/product/$slug" params={{ slug: p.slug }} className="rounded-2xl overflow-hidden bg-blush-soft aspect-square">
-                    <img src={require ? "" : ""} alt="" className="hidden" />
-                    <div className="w-full h-full grid place-items-center text-ink/80 p-4 text-center text-xs">
-                      <span>{p.name}<br /><b>${Number(p.price).toFixed(2)}</b></span>
+                  <Link key={p.id} to="/product/$slug" params={{ slug: p.slug }} className="rounded-2xl overflow-hidden bg-blush-soft aspect-square relative group">
+                    <img src={productImage(p.image_url)} alt={p.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent p-3 text-cream text-xs">
+                      <p className="truncate">{p.name}</p>
+                      <p className="font-semibold">${Number(p.price).toFixed(2)}</p>
                     </div>
                   </Link>
                 ))}
