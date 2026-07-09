@@ -262,7 +262,7 @@ function OrdersPanel() {
   const qc = useQueryClient();
   const { data } = useQuery({ queryKey: ["adm-orders-list"], queryFn: async () => (await supabase.from("orders").select("*").order("created_at", { ascending: false })).data ?? [] });
   const setStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from("orders").update({ status }).eq("id", id);
+    const { error } = await supabase.from("orders").update({ status: status as any }).eq("id", id);
     if (error) toast.error(error.message); else { toast.success("Updated"); qc.invalidateQueries({ queryKey: ["adm-orders-list"] }); }
   };
   return (
