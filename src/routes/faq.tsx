@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { motion } from "framer-motion";
 
-export const Route = createFileRoute("/faq")({ component: FAQ, head: () => ({ meta: [{ title: "FAQ — Lumière" }] }) });
+export const Route = createFileRoute("/faq")({ component: FAQ, head: () => ({ meta: [{ title: "FAQ — Lumiere" }] }) });
 
 const QA = [
   ["How long does shipping take?", "Standard shipping arrives in 3-5 business days. Express in 1-2. Free over $75."],
@@ -16,14 +17,16 @@ const QA = [
 function FAQ() {
   return (
     <AppShell>
-      <div className="mx-auto max-w-3xl px-6 py-16">
-        <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground">Help center</p>
-        <h1 className="mt-2 font-display text-5xl">Frequently asked</h1>
-        <Accordion type="single" collapsible className="mt-10">
+      <div className="mx-auto max-w-3xl px-6 py-20">
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}>
+          <p className="section-label">Help center</p>
+          <h1 className="mt-4 font-display text-3xl md:text-5xl lg:text-6xl">Frequently asked</h1>
+        </motion.div>
+        <Accordion type="single" collapsible className="mt-14">
           {QA.map(([q, a], i) => (
-            <AccordionItem key={i} value={`q${i}`}>
-              <AccordionTrigger className="text-left font-display text-lg">{q}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">{a}</AccordionContent>
+            <AccordionItem key={i} value={`q${i}`} className="border-border/40">
+              <AccordionTrigger className="text-left font-display text-lg py-6 hover:no-underline hover:text-primary transition-colors">{q}</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed pb-6">{a}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

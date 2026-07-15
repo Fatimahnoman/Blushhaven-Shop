@@ -1,46 +1,78 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Facebook, Twitter, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Sparkles } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="mt-32 border-t bg-muted/40">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <Sparkles className="w-5 h-5 text-primary" />
-            <span className="font-display text-2xl">Lumière</span>
+    <footer className="mt-32 relative">
+      {/* Decorative gradient top */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+
+      <div className="bg-muted/20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 grid gap-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 grid place-items-center">
+                <Sparkles className="w-4 h-4 text-primary" />
+              </div>
+              <span className="font-display text-2xl tracking-tight">Lumiere</span>
+            </div>
+            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
+              Modern luxury beauty, handcrafted for the ritual of everyday radiance.
+            </p>
           </div>
-          <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-            Modern luxury beauty, handcrafted for the ritual of everyday radiance.
-          </p>
-          <form onSubmit={(e) => e.preventDefault()} className="mt-6 flex items-center gap-2 rounded-full bg-background border p-1 pl-4 max-w-sm">
-            <input placeholder="Email for 10% off" className="bg-transparent outline-none text-sm flex-1" maxLength={120} />
-            <Button size="sm" type="submit" className="rounded-full">Subscribe</Button>
-          </form>
+          {[
+            {
+              title: "Shop",
+              links: [
+                ["Our Collection", "/shop"],
+                ["New arrivals", "/shop?filter=new"],
+                ["Bestsellers", "/shop?filter=best"],
+                ["Gift cards", "/shop"],
+              ],
+            },
+            {
+              title: "Help",
+              links: [
+                ["Contact", "/contact"],
+                ["FAQ", "/faq"],
+                ["Shipping & returns", "/faq"],
+                ["Track order", "/orders"],
+              ],
+            },
+            {
+              title: "About",
+              links: [
+                ["Our story", "/about"],
+                ["Sustainability", "/about"],
+                ["Careers", "/about"],
+                ["Press", "/about"],
+              ],
+            },
+          ].map((col) => (
+            <div key={col.title}>
+              <h4 className="section-label mb-6">{col.title}</h4>
+              <ul className="space-y-3.5">
+                {col.links.map(([label, to]) => (
+                  <li key={label}>
+                    <Link
+                      to={to}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        {[
-          { title: "Shop", links: [["Shop all", "/shop"], ["New arrivals", "/shop"], ["Bestsellers", "/shop"], ["Gift cards", "/shop"]] },
-          { title: "Help", links: [["Contact", "/contact"], ["FAQ", "/faq"], ["Shipping & returns", "/faq"], ["Track order", "/orders"]] },
-          { title: "About", links: [["Our story", "/about"], ["Sustainability", "/about"], ["Careers", "/about"], ["Press", "/about"]] },
-        ].map((col) => (
-          <div key={col.title}>
-            <h4 className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-4">{col.title}</h4>
-            <ul className="space-y-3">
-              {col.links.map(([label, to]) => (
-                <li key={label}><Link to={to} className="text-sm hover:text-primary transition-colors">{label}</Link></li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-      <div className="border-t">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} Lumière Beauty. All rights reserved.</p>
-          <div className="flex gap-3">
-            <a href="#" aria-label="Instagram"><Instagram className="w-4 h-4" /></a>
-            <a href="#" aria-label="Facebook"><Facebook className="w-4 h-4" /></a>
-            <a href="#" aria-label="Twitter"><Twitter className="w-4 h-4" /></a>
+        <div className="editorial-divider" />
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-8 flex flex-wrap items-center justify-between gap-4 text-xs text-muted-foreground">
+          <p>&copy; {new Date().getFullYear()} Lumiere Beauty. All rights reserved.</p>
+          <div className="flex gap-7">
+            <a href="#" className="hover:text-primary transition-colors">Privacy</a>
+            <a href="#" className="hover:text-primary transition-colors">Terms</a>
+            <a href="#" className="hover:text-primary transition-colors">Cookies</a>
           </div>
         </div>
       </div>

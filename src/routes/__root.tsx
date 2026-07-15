@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { Toaster } from "sonner";
+import { motion } from "framer-motion";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -12,16 +13,38 @@ import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-hero px-4">
-      <div className="max-w-md text-center">
-        <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground">404</p>
-        <h1 className="mt-3 font-display text-5xl">Off the grid</h1>
-        <p className="mt-4 text-sm text-muted-foreground">The page you're looking for has left the beauty counter.</p>
-        <div className="mt-8">
-          <Link to="/" className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-xs uppercase tracking-[0.2em] text-primary-foreground hover:opacity-90 transition">
-            Return home
+    <div className="flex min-h-screen items-center justify-center bg-hero px-4 relative overflow-hidden">
+      <div className="absolute inset-0 bg-mesh opacity-30" />
+      {/* Floating circles */}
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full bg-primary/5"
+          style={{ width: 100 + i * 60, height: 100 + i * 60, left: `${10 + i * 18}%`, top: `${15 + (i % 3) * 25}%` }}
+          animate={{ y: [0, -20, 0], rotate: [0, 5, -5, 0] }}
+          transition={{ duration: 6 + i * 2, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
+      <div className="max-w-lg text-center relative z-10">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200, delay: 0.1 }}>
+          <h1 className="font-display text-[120px] md:text-[160px] leading-none bg-gradient-to-br from-primary via-primary/70 to-blush bg-clip-text text-transparent">
+            404
+          </h1>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="font-display text-2xl md:text-3xl mt-4">
+          Page not found
+        </motion.p>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-4 text-muted-foreground leading-relaxed">
+          The page you're looking for doesn't exist or has been moved to a new location.
+        </motion.p>
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-10 flex flex-wrap justify-center gap-4">
+          <Link to="/" className="inline-flex items-center justify-center rounded-full px-8 py-3 text-xs uppercase tracking-[0.2em] btn-primary">
+            Go Home
           </Link>
-        </div>
+          <Link to="/shop" className="rounded-full border border-border/60 px-8 py-3 text-xs uppercase tracking-[0.2em] hover:bg-muted transition-colors">
+            Shop Now
+          </Link>
+        </motion.div>
       </div>
     </div>
   );
@@ -31,14 +54,37 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
   useEffect(() => { reportLovableError(error, { boundary: "tanstack_root_error_component" }); }, [error]);
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <div className="max-w-md text-center">
-        <h1 className="font-display text-3xl">Something went sideways</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Try again in a moment.</p>
-        <div className="mt-6 flex justify-center gap-2">
-          <button onClick={() => { router.invalidate(); reset(); }} className="rounded-full bg-primary px-5 py-2.5 text-xs uppercase tracking-[0.2em] text-primary-foreground">Try again</button>
-          <a href="/" className="rounded-full border px-5 py-2.5 text-xs uppercase tracking-[0.2em]">Home</a>
-        </div>
+    <div className="flex min-h-screen items-center justify-center bg-hero px-4 relative overflow-hidden">
+      <div className="absolute inset-0 bg-mesh opacity-30" />
+      {[...Array(4)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full bg-destructive/5"
+          style={{ width: 80 + i * 50, height: 80 + i * 50, right: `${5 + i * 20}%`, top: `${20 + (i % 3) * 20}%` }}
+          animate={{ y: [0, -15, 0], rotate: [0, -5, 5, 0] }}
+          transition={{ duration: 5 + i * 2, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
+      <div className="max-w-lg text-center relative z-10">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200 }}>
+          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-destructive/10 to-destructive/5 grid place-items-center mx-auto mb-8">
+            <span className="text-destructive text-3xl font-semibold">!</span>
+          </div>
+        </motion.div>
+        <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="font-display text-4xl md:text-5xl">
+          Something went wrong
+        </motion.h1>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="mt-4 text-muted-foreground text-lg">
+          An unexpected error occurred. Please try again in a moment.
+        </motion.p>
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="mt-10 flex flex-wrap justify-center gap-4">
+          <button onClick={() => { router.invalidate(); reset(); }} className="rounded-full px-8 py-3 text-xs uppercase tracking-[0.2em] btn-primary">
+            Try again
+          </button>
+          <Link to="/" className="rounded-full border border-border/60 px-8 py-3 text-xs uppercase tracking-[0.2em] hover:bg-muted transition-colors">
+            Go Home
+          </Link>
+        </motion.div>
       </div>
     </div>
   );
@@ -48,7 +94,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: "Lumière — Luxury Beauty & Makeup" },
       { name: "description", content: "Modern luxury beauty. Discover Lumière's signature lipsticks, foundations, skincare and more, handcrafted for the ritual of everyday radiance." },
       { name: "author", content: "Lumière" },
@@ -77,8 +123,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <head><HeadContent /></head>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('lumiere-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark')}catch(e){}` }} />
+        <HeadContent />
+      </head>
       <body>{children}<Scripts /></body>
     </html>
   );

@@ -19,9 +19,35 @@ const MAP: Record<string, string> = {
   moisturizer,
 };
 
-export function productImage(key: string | null | undefined): string {
-  if (!key) return lipstick;
-  return MAP[key] ?? lipstick;
+const CATEGORY_MAP: Record<string, string> = {
+  "lip-color": "lipstick",
+  face: "foundation",
+  eye: "eyeshadow",
+  skincare: "serum",
+  tools: "brushes",
+  fragrance: "serum",
+  "bath-body": "moisturizer",
+  "gift-sets": "brushes",
+};
+
+export function productImage(
+  imageKey: string | null | undefined,
+  categorySlug?: string | null,
+): string {
+  if (categorySlug) {
+    const key = CATEGORY_MAP[categorySlug];
+    if (key) return MAP[key] ?? lipstick;
+  }
+  if (!imageKey) return lipstick;
+  return MAP[imageKey] ?? lipstick;
 }
 
-export const ALL_IMAGES = [lipstick, foundation, eyeshadow, mascara, serum, brushes, moisturizer];
+export const ALL_IMAGES = [
+  lipstick,
+  foundation,
+  eyeshadow,
+  mascara,
+  serum,
+  brushes,
+  moisturizer,
+];

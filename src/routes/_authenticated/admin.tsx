@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useAuth, useIsAdmin } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,8 +10,30 @@ import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, BarChart, 
 import { Package, DollarSign, Users, ShoppingCart, Tag, Plus, Edit3, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { format, subDays } from "date-fns";
+import { Field, SelectField, TextareaField } from "@/components/Field";
+import type { Enums } from "@/integrations/supabase/types";
 
-export const Route = createFileRoute("/_authenticated/admin")({ component: Admin, head: () => ({ meta: [{ title: "Admin — Lumière" }, { name: "robots", content: "noindex" }] }) });
+type OrderStatus = Enums<"order_status">;
+
+export const Route = createFileRoute("/_authenticated/admin")({
+  beforeLoad: async ({ context }) => {
+    const user = (context as { user?: { id: string } }).user;
+    if (!user) throw redirect({ to: "/account" });
+
+    const { data } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user.id)
+      .eq("role", "admin")
+      .maybeSingle();
+
+    if (!data) throw redirect({ to: "/account" });
+
+    return context;
+  },
+  component: Admin,
+  head: () => ({ meta: [{ title: "Admin — Lumière" }, { name: "robots", content: "noindex" }] }),
+});
 
 function Admin() {
   const { user } = useAuth();
@@ -194,7 +216,7 @@ function ProductModal({ initial, categories, onClose, onSaved }: { initial: any;
     const payload = { ...f, price: Number(f.price), compare_at_price: f.compare_at_price ? Number(f.compare_at_price) : null, stock: Number(f.stock) };
     const res = initial.id
       ? await supabase.from("products").update(payload).eq("id", initial.id)
-      : await supabase.from("products").insert(payload as any);
+      : await supabase.from("products").insert({ ...payload, gallery: [] } as any);
     if (res.error) return toast.error(res.error.message);
     toast.success("Saved"); onSaved();
   };
@@ -206,30 +228,16 @@ function ProductModal({ initial, categories, onClose, onSaved }: { initial: any;
           <button onClick={onClose}><X /></button>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <F label="Slug" v={f.slug} on={(v) => setF({ ...f, slug: v })} />
-          <F label="Name" v={f.name} on={(v) => setF({ ...f, name: v })} />
-          <F label="Brand" v={f.brand} on={(v) => setF({ ...f, brand: v })} />
-          <label className="block">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Category</span>
-            <select value={f.category_id} onChange={(e) => setF({ ...f, category_id: e.target.value })} className="mt-1 w-full rounded-xl border bg-background px-4 py-3 text-sm">
-              {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-            </select>
-          </label>
-          <F label="Price" v={String(f.price)} on={(v) => setF({ ...f, price: v as any })} type="number" />
-          <F label="Compare price" v={String(f.compare_at_price ?? "")} on={(v) => setF({ ...f, compare_at_price: (v as any) || null })} type="number" />
-          <F label="Stock" v={String(f.stock)} on={(v) => setF({ ...f, stock: v as any })} type="number" />
-          <label className="block">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Image key</span>
-            <select value={f.image_url} onChange={(e) => setF({ ...f, image_url: e.target.value })} className="mt-1 w-full rounded-xl border bg-background px-4 py-3 text-sm">
-              {["lipstick","foundation","eyeshadow","mascara","serum","brushes","moisturizer"].map((k) => <option key={k}>{k}</option>)}
-            </select>
-          </label>
+          <Field label="Slug" v={f.slug} on={(v) => setF({ ...f, slug: v })} />
+          <Field label="Name" v={f.name} on={(v) => setF({ ...f, name: v })} />
+          <Field label="Brand" v={f.brand} on={(v) => setF({ ...f, brand: v })} />
+          <SelectField label="Category" value={f.category_id} onChange={(v) => setF({ ...f, category_id: v })} options={categories.map((c) => ({ value: c.id, label: c.name }))} />
+          <Field label="Price" v={String(f.price)} on={(v) => setF({ ...f, price: v as any })} type="number" />
+          <Field label="Compare price" v={String(f.compare_at_price ?? "")} on={(v) => setF({ ...f, compare_at_price: (v as any) || null })} type="number" />
+          <Field label="Stock" v={String(f.stock)} on={(v) => setF({ ...f, stock: v as any })} type="number" />
+          <SelectField label="Image key" value={f.image_url} onChange={(v) => setF({ ...f, image_url: v })} options={["lipstick","foundation","eyeshadow","mascara","serum","brushes","moisturizer"].map((k) => ({ value: k, label: k }))} />
           <div className="col-span-2">
-            <label className="block">
-              <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Description</span>
-              <textarea value={f.description} onChange={(e) => setF({ ...f, description: e.target.value })} maxLength={2000}
-                className="mt-1 w-full rounded-xl border bg-background px-4 py-3 text-sm min-h-24" />
-            </label>
+            <TextareaField label="Description" value={f.description} onChange={(v) => setF({ ...f, description: v })} />
           </div>
           <div className="col-span-2 grid grid-cols-2 md:grid-cols-5 gap-2">
             {(["is_bestseller","is_new","is_featured","is_flash_sale","is_trending"] as const).map((k) => (
@@ -248,21 +256,12 @@ function ProductModal({ initial, categories, onClose, onSaved }: { initial: any;
     </div>
   );
 }
-function F({ label, v, on, type = "text" }: { label: string; v: string; on: (v: string) => void; type?: string }) {
-  return (
-    <label className="block">
-      <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">{label}</span>
-      <input type={type} value={v} onChange={(e) => on(e.target.value)} maxLength={500}
-        className="mt-1 w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none focus:border-primary" />
-    </label>
-  );
-}
 
 function OrdersPanel() {
   const qc = useQueryClient();
   const { data } = useQuery({ queryKey: ["adm-orders-list"], queryFn: async () => (await supabase.from("orders").select("*").order("created_at", { ascending: false })).data ?? [] });
   const setStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from("orders").update({ status: status as any }).eq("id", id);
+    const { error } = await supabase.from("orders").update({ status: status as OrderStatus }).eq("id", id);
     if (error) toast.error(error.message); else { toast.success("Updated"); qc.invalidateQueries({ queryKey: ["adm-orders-list"] }); }
   };
   return (
@@ -312,7 +311,7 @@ function CouponsPanel() {
   const [c, setC] = useState({ code: "", discount_percent: 10, description: "" });
   const add = async () => {
     if (!c.code) return;
-    const { error } = await supabase.from("coupons").insert({ code: c.code.toUpperCase(), discount_percent: Number(c.discount_percent), description: c.description, active: true } as any);
+    const { error } = await supabase.from("coupons").insert({ code: c.code.toUpperCase(), discount_percent: Number(c.discount_percent), description: c.description, active: true });
     if (error) toast.error(error.message); else { toast.success("Coupon created"); setC({ code: "", discount_percent: 10, description: "" }); qc.invalidateQueries({ queryKey: ["adm-coupons"] }); }
   };
   return (
@@ -320,14 +319,14 @@ function CouponsPanel() {
       <div className="rounded-3xl border overflow-hidden bg-background">
         <table className="w-full text-sm">
           <thead className="bg-muted text-xs uppercase tracking-[0.15em] text-muted-foreground"><tr><th className="text-left px-4 py-3">Code</th><th className="text-left px-4 py-3">%</th><th className="text-left px-4 py-3">Active</th></tr></thead>
-          <tbody>{data?.map((k: any) => <tr key={k.id} className="border-t"><td className="px-4 py-3 font-mono">{k.code}</td><td className="px-4 py-3">{k.discount_percent}%</td><td className="px-4 py-3">{k.active ? "Yes" : "No"}</td></tr>)}</tbody>
+          <tbody>{data?.map((k) => <tr key={k.id} className="border-t"><td className="px-4 py-3 font-mono">{k.code}</td><td className="px-4 py-3">{k.discount_percent}%</td><td className="px-4 py-3">{k.active ? "Yes" : "No"}</td></tr>)}</tbody>
         </table>
       </div>
       <div className="rounded-3xl bg-card-gradient shadow-soft p-6">
         <h3 className="font-display text-xl mb-3 flex items-center gap-2"><Tag className="w-5 h-5" /> New coupon</h3>
-        <F label="Code" v={c.code} on={(v) => setC({ ...c, code: v.toUpperCase() })} />
-        <div className="mt-3"><F label="Discount %" v={String(c.discount_percent)} on={(v) => setC({ ...c, discount_percent: Number(v) })} type="number" /></div>
-        <div className="mt-3"><F label="Description" v={c.description} on={(v) => setC({ ...c, description: v })} /></div>
+        <Field label="Code" value={c.code} onChange={(v) => setC({ ...c, code: v.toUpperCase() })} />
+        <div className="mt-3"><Field label="Discount %" value={String(c.discount_percent)} onChange={(v) => setC({ ...c, discount_percent: Number(v) })} type="number" /></div>
+        <div className="mt-3"><Field label="Description" value={c.description} onChange={(v) => setC({ ...c, description: v })} /></div>
         <Button className="mt-4 w-full rounded-full" onClick={add}>Create</Button>
       </div>
     </div>

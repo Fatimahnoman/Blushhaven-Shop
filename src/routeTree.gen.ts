@@ -10,18 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WishlistRouteImport } from './routes/wishlist'
+import { Route as TrackOrderRouteImport } from './routes/track-order'
+import { Route as SkinQuizRouteImport } from './routes/skin-quiz'
 import { Route as ShopRouteImport } from './routes/shop'
+import { Route as ShadeFinderRouteImport } from './routes/shade-finder'
+import { Route as RoutineBuilderRouteImport } from './routes/routine-builder'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as OrderSuccessRouteImport } from './routes/order-success'
+import { Route as LoyaltyRouteImport } from './routes/loyalty'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as Error500RouteImport } from './routes/error-500'
+import { Route as Error404RouteImport } from './routes/error-404'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CartRouteImport } from './routes/cart'
-import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
-import { Route as OrderSuccessIdRouteImport } from './routes/order-success.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated/orders'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -32,9 +40,29 @@ const WishlistRoute = WishlistRouteImport.update({
   path: '/wishlist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrackOrderRoute = TrackOrderRouteImport.update({
+  id: '/track-order',
+  path: '/track-order',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SkinQuizRoute = SkinQuizRouteImport.update({
+  id: '/skin-quiz',
+  path: '/skin-quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShadeFinderRoute = ShadeFinderRouteImport.update({
+  id: '/shade-finder',
+  path: '/shade-finder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoutineBuilderRoute = RoutineBuilderRouteImport.update({
+  id: '/routine-builder',
+  path: '/routine-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -42,14 +70,39 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrderSuccessRoute = OrderSuccessRouteImport.update({
+  id: '/order-success',
+  path: '/order-success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoyaltyRoute = LoyaltyRouteImport.update({
+  id: '/loyalty',
+  path: '/loyalty',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Error500Route = Error500RouteImport.update({
+  id: '/error-500',
+  path: '/error-500',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Error404Route = Error404RouteImport.update({
+  id: '/error-404',
+  path: '/error-404',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -62,9 +115,9 @@ const CartRoute = CartRouteImport.update({
   path: '/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -84,11 +137,6 @@ const IndexRoute = IndexRouteImport.update({
 const ProductSlugRoute = ProductSlugRouteImport.update({
   id: '/product/$slug',
   path: '/product/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OrderSuccessIdRoute = OrderSuccessIdRouteImport.update({
-  id: '/order-success/$id',
-  path: '/order-success/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
@@ -115,37 +163,53 @@ const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
+  '/error-404': typeof Error404Route
+  '/error-500': typeof Error500Route
   '/faq': typeof FaqRoute
+  '/loyalty': typeof LoyaltyRoute
+  '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/routine-builder': typeof RoutineBuilderRoute
+  '/shade-finder': typeof ShadeFinderRoute
   '/shop': typeof ShopRoute
+  '/skin-quiz': typeof SkinQuizRoute
+  '/track-order': typeof TrackOrderRoute
   '/wishlist': typeof WishlistRoute
   '/account': typeof AuthenticatedAccountRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/order-success/$id': typeof OrderSuccessIdRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
+  '/error-404': typeof Error404Route
+  '/error-500': typeof Error500Route
   '/faq': typeof FaqRoute
+  '/loyalty': typeof LoyaltyRoute
+  '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/routine-builder': typeof RoutineBuilderRoute
+  '/shade-finder': typeof ShadeFinderRoute
   '/shop': typeof ShopRoute
+  '/skin-quiz': typeof SkinQuizRoute
+  '/track-order': typeof TrackOrderRoute
   '/wishlist': typeof WishlistRoute
   '/account': typeof AuthenticatedAccountRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/order-success/$id': typeof OrderSuccessIdRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesById {
@@ -153,19 +217,27 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
+  '/error-404': typeof Error404Route
+  '/error-500': typeof Error500Route
   '/faq': typeof FaqRoute
+  '/loyalty': typeof LoyaltyRoute
+  '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/routine-builder': typeof RoutineBuilderRoute
+  '/shade-finder': typeof ShadeFinderRoute
   '/shop': typeof ShopRoute
+  '/skin-quiz': typeof SkinQuizRoute
+  '/track-order': typeof TrackOrderRoute
   '/wishlist': typeof WishlistRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/order-success/$id': typeof OrderSuccessIdRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRouteTypes {
@@ -173,56 +245,80 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/auth'
+    | '/blog'
     | '/cart'
     | '/checkout'
+    | '/compare'
     | '/contact'
+    | '/error-404'
+    | '/error-500'
     | '/faq'
+    | '/loyalty'
+    | '/order-success'
     | '/reset-password'
+    | '/routine-builder'
+    | '/shade-finder'
     | '/shop'
+    | '/skin-quiz'
+    | '/track-order'
     | '/wishlist'
     | '/account'
     | '/admin'
     | '/orders'
     | '/category/$slug'
-    | '/order-success/$id'
     | '/product/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/auth'
+    | '/blog'
     | '/cart'
     | '/checkout'
+    | '/compare'
     | '/contact'
+    | '/error-404'
+    | '/error-500'
     | '/faq'
+    | '/loyalty'
+    | '/order-success'
     | '/reset-password'
+    | '/routine-builder'
+    | '/shade-finder'
     | '/shop'
+    | '/skin-quiz'
+    | '/track-order'
     | '/wishlist'
     | '/account'
     | '/admin'
     | '/orders'
     | '/category/$slug'
-    | '/order-success/$id'
     | '/product/$slug'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/about'
-    | '/auth'
+    | '/blog'
     | '/cart'
     | '/checkout'
+    | '/compare'
     | '/contact'
+    | '/error-404'
+    | '/error-500'
     | '/faq'
+    | '/loyalty'
+    | '/order-success'
     | '/reset-password'
+    | '/routine-builder'
+    | '/shade-finder'
     | '/shop'
+    | '/skin-quiz'
+    | '/track-order'
     | '/wishlist'
     | '/_authenticated/account'
     | '/_authenticated/admin'
     | '/_authenticated/orders'
     | '/category/$slug'
-    | '/order-success/$id'
     | '/product/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -230,16 +326,24 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
-  AuthRoute: typeof AuthRoute
+  BlogRoute: typeof BlogRoute
   CartRoute: typeof CartRoute
   CheckoutRoute: typeof CheckoutRoute
+  CompareRoute: typeof CompareRoute
   ContactRoute: typeof ContactRoute
+  Error404Route: typeof Error404Route
+  Error500Route: typeof Error500Route
   FaqRoute: typeof FaqRoute
+  LoyaltyRoute: typeof LoyaltyRoute
+  OrderSuccessRoute: typeof OrderSuccessRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  RoutineBuilderRoute: typeof RoutineBuilderRoute
+  ShadeFinderRoute: typeof ShadeFinderRoute
   ShopRoute: typeof ShopRoute
+  SkinQuizRoute: typeof SkinQuizRoute
+  TrackOrderRoute: typeof TrackOrderRoute
   WishlistRoute: typeof WishlistRoute
   CategorySlugRoute: typeof CategorySlugRoute
-  OrderSuccessIdRoute: typeof OrderSuccessIdRoute
   ProductSlugRoute: typeof ProductSlugRoute
 }
 
@@ -252,11 +356,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WishlistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/track-order': {
+      id: '/track-order'
+      path: '/track-order'
+      fullPath: '/track-order'
+      preLoaderRoute: typeof TrackOrderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skin-quiz': {
+      id: '/skin-quiz'
+      path: '/skin-quiz'
+      fullPath: '/skin-quiz'
+      preLoaderRoute: typeof SkinQuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shade-finder': {
+      id: '/shade-finder'
+      path: '/shade-finder'
+      fullPath: '/shade-finder'
+      preLoaderRoute: typeof ShadeFinderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/routine-builder': {
+      id: '/routine-builder'
+      path: '/routine-builder'
+      fullPath: '/routine-builder'
+      preLoaderRoute: typeof RoutineBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reset-password': {
@@ -266,6 +398,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/order-success': {
+      id: '/order-success'
+      path: '/order-success'
+      fullPath: '/order-success'
+      preLoaderRoute: typeof OrderSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/loyalty': {
+      id: '/loyalty'
+      path: '/loyalty'
+      fullPath: '/loyalty'
+      preLoaderRoute: typeof LoyaltyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
@@ -273,11 +419,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/error-500': {
+      id: '/error-500'
+      path: '/error-500'
+      fullPath: '/error-500'
+      preLoaderRoute: typeof Error500RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/error-404': {
+      id: '/error-404'
+      path: '/error-404'
+      fullPath: '/error-404'
+      preLoaderRoute: typeof Error404RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -294,11 +461,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -327,13 +494,6 @@ declare module '@tanstack/react-router' {
       path: '/product/$slug'
       fullPath: '/product/$slug'
       preLoaderRoute: typeof ProductSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/order-success/$id': {
-      id: '/order-success/$id'
-      path: '/order-success/$id'
-      fullPath: '/order-success/$id'
-      preLoaderRoute: typeof OrderSuccessIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/category/$slug': {
@@ -386,18 +546,36 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
-  AuthRoute: AuthRoute,
+  BlogRoute: BlogRoute,
   CartRoute: CartRoute,
   CheckoutRoute: CheckoutRoute,
+  CompareRoute: CompareRoute,
   ContactRoute: ContactRoute,
+  Error404Route: Error404Route,
+  Error500Route: Error500Route,
   FaqRoute: FaqRoute,
+  LoyaltyRoute: LoyaltyRoute,
+  OrderSuccessRoute: OrderSuccessRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  RoutineBuilderRoute: RoutineBuilderRoute,
+  ShadeFinderRoute: ShadeFinderRoute,
   ShopRoute: ShopRoute,
+  SkinQuizRoute: SkinQuizRoute,
+  TrackOrderRoute: TrackOrderRoute,
   WishlistRoute: WishlistRoute,
   CategorySlugRoute: CategorySlugRoute,
-  OrderSuccessIdRoute: OrderSuccessIdRoute,
   ProductSlugRoute: ProductSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
